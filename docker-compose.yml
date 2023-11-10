@@ -1,0 +1,22 @@
+version: '3'
+services:
+  form-api-test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: "afrezefond/form-api-test:latest"
+    container_name: form-api-test
+    environment:
+      - PORT=3000
+      - MONGODB_URI=mongodb://mongodb:27017
+    ports:
+      - "3000:3000"
+    links:
+      - mongodb
+  mongodb:
+    container_name: mongodb
+    image: mongo
+    volumes:
+      - ./data:/data/db
+    ports:
+      - '27017:27017'
