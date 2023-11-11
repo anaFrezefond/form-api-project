@@ -1,26 +1,52 @@
-import { Request, Response } from "express";
-import { saveForm } from '../services/saveForm';
-import { queryResults } from '../services/queryResults';
+import { NextFunction, Request, Response } from 'express';
+import { saveForm } from '../services/save.services';
+import { queryResults } from '../services/query.services';
+import { IForm, IUserResponse } from '@/types/types';
+import { 
+  InternalServerError,
+  MissingParamError, 
+  NoResultsFoundError 
+} from '../errors/errors';
 
-export const getUserResponses = async (req: Request, res: Response) => {
-  // queryResult prend en entrée un objet typé et retourne un objet typé
-  // pas de res / req
-  // logique claire côté service
-  // input => output
+interface QueryParams {
+  formId?: string;
+  userId?: string;
+}
+
+type SavedFormValueType = string;
+
+export const getUserResponses = async (req: Request, res: Response<IUserResponse[]>, next: NextFunction): Promise<void> => {
+  const { formId, userId } = req.params;
+
+  if (!formId && !userId) {
+    next(new MissingParamError('formId or userId'));
+    return;
+  }
+
+  const queryParams: QueryParams = {
+    formId,
+    userId
+  };
+
   try {
-    await queryResults(req, res);
+    const results = await queryResults(queryParams);
+    if (results.length === 0) {
+      next(new NoResultsFoundError())
+      return;
+    }
+    res.send(results);
   } catch (error) {
-    console.error(error);
-    res.status(500).send('Internal Server Error');
+    console.error('Error in getUserResponses:', error);
+    next(new InternalServerError('Error in getUserResponses'));
   }
 };
 
-export const submitCreationForm = async (req: Request, res: Response) => {
+export const submitCreationForm = async (req: Request<IForm>, res: Response<SavedFormValueType>, next: NextFunction): Promise<void> => {
   try {
-    const questionResponsesObject = req.body;
-    const savedForm = await saveForm(req, res);
+    const submittedForm : IForm = req.body;
+    const savedFormValue = await saveForm(submittedForm);
+    res.send(`Information successfully saved: ${savedFormValue}`);
   } catch (error) {
-    console.error(error);
-    res.status(500).send('Internal Server Error');
+    next(new InternalServerError('Error in submitCreationForm'))
   }
 };

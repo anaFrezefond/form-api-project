@@ -1,16 +1,15 @@
 import express, { Application } from 'express';
 import dotenv from 'dotenv';
+
+import connectToDatabase from './config/db';
 import adminRouter from './routes/admin.routes';
 import userRouter from './routes/user.routes';
-import connectToDatabase from './configs/db';
+
+import errorMiddleware from './middlewares/error.handler';
 
 dotenv.config({ path: '.env' });
 
 const app: Application = express();
-const port = process.env.PORT || 3000;
-
-// app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', 'pug');
  
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -18,8 +17,18 @@ app.use(express.urlencoded({ extended: false }));
 app.use(adminRouter);
 app.use(userRouter);
 
-connectToDatabase();
+app.use(errorMiddleware);
 
-app.listen(port, () => {
-  console.log(`Server is listening on http://localhost:${port}`);
-});
+const initServer = async () => {
+  try {
+    const port = process.env.PORT || 3000;
+    await connectToDatabase();
+    app.listen(port, () => {
+      console.log(`Server is listening on http://localhost:${port}`);
+    });
+  } catch (error) {
+    console.error('Error starting the server:', error);
+  }
+}
+
+initServer();

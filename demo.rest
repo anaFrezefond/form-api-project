@@ -1,17 +1,15 @@
 @PORT=3000
 
-### Not fully functional : display form (using templating engine Pug)
-GET http://localhost:{{PORT}}/admin/display
-
 ### Create a form with several questions
 POST http://localhost:{{PORT}}/admin/submit
 Content-Type: application/json
 
 {
+  "userId": "67e0464059a0efb9ff",
   "title": "Week at work : satisfaction form",
   "questions": [
     {
-      "questionText": "How do you evaluate your week at the office?",
+      "questionText": "How do you rate your week at the office?",
       "questionType": "rating",
       "questionNumber": 1
     },
@@ -24,8 +22,8 @@ Content-Type: application/json
   ]
 }
 
-### Get informations to build user form
-GET http://localhost:{{PORT}}/user/form/654e6e4775eb4a28730e0094
+### Get previously created form
+GET http://localhost:{{PORT}}/user/form/654fda6ebc0fd35250c38425
 Content-Type: application/json
 
 ### Save form responses by user
@@ -34,27 +32,19 @@ Content-Type: application/json
 
 {
   "userId": "654e044059a0efb9ffd41368",
-  "formId": "654e3601e2a16d5fe7c1a852",
+  "formId": "654fda6ebc0fd35250c38425",
   "responses": [
     {
-      "questionId": "654e3601e2a16d5fe7c1a853",
+      "questionId": "654fda6ebc0fd35250c38426",
       "answer": "5"
     },
     {
-      "questionId": "654e3601e2a16d5fe7c1a854",
+      "questionId": "654fda6ebc0fd35250c38427",
       "answer": "The service can be improved"
     }
     // Add more responses if needed ...
   ]
 }
 
-### /admin/response/:formId
-GET http://localhost:{{PORT}}/admin/responseByForm/654e3601e2a16d5fe7c1a852
-
-### /admin/response/:userId
-GET http://localhost:{{PORT}}/admin/responseByUser/654e044059a0efb9ffd41368
-
-
-### /admin/responseByUserAndForm/:userId/:formId
-### Récupération des réponses aux questions par utilisateur pour ce questionnaire
-GET http://localhost:{{PORT}}/admin/responseByUserAndForm/654e044059a0efb9ffd41368/654e3601e2a16d5fe7c1a852
+### /admin/userResponse/:userId/:formId
+GET http://localhost:{{PORT}}/admin/userResponse/654e044059a0efb9ffd41368/654fda6ebc0fd35250c38425
