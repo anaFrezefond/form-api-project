@@ -1,5 +1,4 @@
 import { Document } from 'mongoose';
-
 export interface IQuestion {
   _id: any;
   questionText: string;
