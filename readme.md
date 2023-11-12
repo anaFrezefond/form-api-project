@@ -25,11 +25,26 @@ Author: Anastasia Frezefond
         Endpoint: /admin/submit
         Method: POST
         Description: Submit a form
+        Body: {
+            userId: string,
+            title: string,
+            questions: [
+                {
+                    questionText: string,
+                    questionType: string,
+                    questionNumber: number,
+                },
+                ...
+            ]
+        }
 
     Retrieve answers to questions by user for this questionnaire
         Endpoint: /admin/userResponse/:userId/:formId
         Method: GET
         Description: Retrieve responses for a specific user
+        Params:
+            userId: string
+            formId: string
 
 ### User Routes
 
@@ -37,6 +52,8 @@ Author: Anastasia Frezefond
         Endpoint: /user/form/:formId
         Method: GET
         Description: Get a form by its ID
+        Param:
+            formId: string
 
     Send response to questions in the questionnaire by a user
         Endpoint: /user/submit
@@ -49,8 +66,10 @@ id : humao.rest-client
 To facilitate local testing, consider installing a REST client plugin (Visual Studio Code).
 File to use for testing routes inside VSCode => demo.rest
 
-## View database
-forms & userresponses
+## View database & collections if needed
 
-* Run: docker exec -it mongodb mongosh
-* Run: show dbs / show collections / db.forms.find() / db.userresponses.find()
+database: test
+collections: forms & userresponses
+
+- Run: docker exec -it mongodb mongosh
+- Run: show dbs / show collections / db.forms.find() / db.userresponses.find()
