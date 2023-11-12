@@ -1,7 +1,12 @@
 import request from 'supertest';
 import app from '../src/server';
+import mongoose from 'mongoose';
 
-describe('Admin Routes Integration Tests', () => {
+beforeEach(async () => {
+  await mongoose.connect('mongodb://localhost:27017');
+});
+
+describe('POST /admin/submit', () => {
   it('should create a form with several questions', async () => {
     const response = await request(app)
       .post('/admin/submit')
@@ -22,7 +27,11 @@ describe('Admin Routes Integration Tests', () => {
           },
         ],
       });
-
     expect(response.status).toBe(200);
   });
+});
+
+afterEach(async () => {
+  await mongoose.connection.db.dropDatabase();
+  await mongoose.connection.close();
 });

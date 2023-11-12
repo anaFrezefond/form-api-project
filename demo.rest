@@ -47,5 +47,5 @@ Content-Type: application/json
   ]
 }
 ### Get user responses to form
-### Reminder => replace :userId and :formId by value before running
+### Reminder => replace :formId by value before running
 GET http://localhost:{{PORT}}/admin/userResponse/654e044059a0efb9ffd41368/:formId 
