@@ -4,13 +4,13 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: "afrezefond/form-api-test:latest"
+    image: 'afrezefond/form-api-test:latest'
     container_name: form-api-test
     environment:
-      - PORT=3000
+      - PORT=8080
       - MONGODB_URI=mongodb://mongodb:27017
     ports:
-      - "3000:3000"
+      - '8080:8080'
     links:
       - mongodb
   mongodb:

@@ -15,6 +15,7 @@ Author: Anastasia Frezefond
 ### Run Docker Compose:
 
     docker-compose up -d --build
+    Default running PORT will be 8080
 
 ## List of Routes
 
@@ -49,9 +50,7 @@ To facilitate local testing, consider installing a REST client plugin (Visual St
 File to use for testing routes inside VSCode => demo.rest
 
 ## View database
-
-- forms
-- userresponses
+forms & userresponses
 
 * Run: docker exec -it mongodb mongosh
 * Run: show dbs / show collections / db.forms.find() / db.userresponses.find()

@@ -2,7 +2,6 @@ import { NoResultsFoundError, QueryResultsError, SaveFormError } from '../errors
 import ResponseModel from '../models/responsesModel';
 import { IForm, IUserResponse } from '../types/types';
 import FormModel from '../models/formModel';
-
 interface QueryParams {
   formId?: string;
   userId?: string;

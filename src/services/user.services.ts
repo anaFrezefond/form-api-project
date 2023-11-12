@@ -1,10 +1,10 @@
 import mongoose from 'mongoose';
-import { IUserResponse } from '../types/types';
+import { IForm, IUserResponse } from '../types/types';
 import FormModel from '../models/formModel';
 import { FormNotFoundError } from '../errors/errors';
 import UserResponseModel from '../models/responsesModel';
 
-export const queryUserForm = async (formId: string) => {
+export const queryUserForm = async (formId: string): Promise<IForm> => {
   try {
     const objectIdFormId = new mongoose.Types.ObjectId(formId);
     const form = await FormModel.findById(objectIdFormId);
