@@ -26,7 +26,7 @@ Author: Anastasia Frezefond
         Description: Submit a form
 
     Retrieve answers to questions by user for this questionnaire
-        Endpoint: /admin/userResponse/:userId
+        Endpoint: /admin/userResponse/:userId/:formId
         Method: GET
         Description: Retrieve responses for a specific user
 
@@ -46,10 +46,12 @@ Author: Anastasia Frezefond
 
 id : humao.rest-client
 To facilitate local testing, consider installing a REST client plugin (Visual Studio Code).
-File: demo.rest
-Use this file for testing routes
+File to use for testing routes inside VSCode => demo.rest
 
 ## View database
 
-- Run: docker exec -it mongodb mongosh
-- Run: show dbs
+- forms
+- userresponses
+
+* Run: docker exec -it mongodb mongosh
+* Run: show dbs / show collections / db.forms.find() / db.userresponses.find()

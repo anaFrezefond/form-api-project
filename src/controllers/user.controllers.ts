@@ -1,48 +1,43 @@
-import { NextFunction, Request, Response } from 'express';
-import { queryUserForm } from '../services/query.services';
-import { saveUserResponses } from '../services/save.services';
 import mongoose from 'mongoose';
-import { 
-  InternalServerError,
-  MissingParamError, 
-  NoResultsFoundError 
-} from "../errors/errors";
-import { IUserResponse } from '@/types/types';
+import { NextFunction, Request, Response } from 'express';
+import { queryUserForm, saveUserResponses } from '../services/user.services';
+import { InternalServerError, MissingParamError, NoResultsFoundError } from '../errors/errors';
+import { IUserResponse } from '../types/types';
 
-interface QueryParams {
+interface QueryParam {
   formId?: string;
 }
 
-export const getUserForm = async (req: Request, res: Response, next: NextFunction) : Promise<void> => {
+export const getUserForm = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const { formId } : QueryParams = req.params;
+    const { formId }: QueryParam = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(formId)) {
-      next(new MissingParamError('Invalid form id'));
-    return;
-    }
-
-    const objectIdFormId = new mongoose.Types.ObjectId(formId);
-    const form = await queryUserForm(objectIdFormId);
-
-    if (!form) {
-      next(new NoResultsFoundError())
+      next(new MissingParamError(formId));
       return;
     }
 
-    res.json(form);
+    const form = await queryUserForm(formId);
+
+    if (!form) {
+      next(new NoResultsFoundError());
+      return;
+    }
+
+    res.status(200).send(form);
   } catch (error) {
     console.error(error);
-    next(new InternalServerError('Error in getUserForm'))
+    next(new InternalServerError('Error in getUserForm'));
   }
 };
 
-export const submitUserResponses = async (req: Request<IUserResponse>, res: Response, next: NextFunction) : Promise<void> => {
-    try {
-        const submittedResponses : IUserResponse = req.body;
-        const savedForm = await saveUserResponses(submittedResponses);
-      } catch (error) {
-        console.error(error);
-        res.status(500).send('Internal Server Error');
-      }
+export const submitUserResponses = async (req: Request<IUserResponse>, res: Response<IUserResponse>, next: NextFunction): Promise<void> => {
+  try {
+    const submittedResponses: IUserResponse = req.body;
+    const savedForm = await saveUserResponses(submittedResponses);
+    res.status(200).send(savedForm);
+  } catch (error) {
+    console.error(error);
+    next(new InternalServerError('Error in submitUserResponses'));
+  }
 };

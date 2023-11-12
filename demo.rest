@@ -23,7 +23,8 @@ Content-Type: application/json
 }
 
 ### Get previously created form
-GET http://localhost:{{PORT}}/user/form/654fda6ebc0fd35250c38425
+### Reminder => replace :formId by value before running
+GET http://localhost:{{PORT}}/user/form/:formId
 Content-Type: application/json
 
 ### Save form responses by user
@@ -32,19 +33,19 @@ Content-Type: application/json
 
 {
   "userId": "654e044059a0efb9ffd41368",
-  "formId": "654fda6ebc0fd35250c38425",
-  "responses": [
+  "formId": "TO_ADD_MANUALLY",
+  "answers": [
     {
       "questionId": "654fda6ebc0fd35250c38426",
-      "answer": "5"
+      "answerText": "5"
     },
     {
       "questionId": "654fda6ebc0fd35250c38427",
-      "answer": "The service can be improved"
+      "answerText": "The service can be improved"
     }
     // Add more responses if needed ...
   ]
 }
-
-### /admin/userResponse/:userId/:formId
-GET http://localhost:{{PORT}}/admin/userResponse/654e044059a0efb9ffd41368/654fda6ebc0fd35250c38425
+### Get user responses to form
+### Reminder => replace :userId and :formId by value before running
+GET http://localhost:{{PORT}}/admin/userResponse/654e044059a0efb9ffd41368/:formId 

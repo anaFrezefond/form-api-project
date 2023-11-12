@@ -1,27 +1,22 @@
 import { Request, Response, NextFunction } from 'express';
-import {
-  InternalServerError,
-  MissingParamError,
-  NoResultsFoundError,
-} from '../errors/errors';
+import { FormNotFoundError, InternalServerError, MissingParamError, NoResultsFoundError, QueryResultsError, SaveFormError } from '../errors/errors';
 
-const errorMiddleware = (
-  error: Error,
-  req: Request,
-  res: Response,
-  next: NextFunction
-): void => {
-  if (error instanceof MissingParamError) {
-    res.status(400).send(error.message);
+const errorHandler = (error: Error, req: Request, res: Response, next: NextFunction): void => {
+  if (error instanceof InternalServerError) {
+    res.status(500).json({ error: 'Internal Server Error' });
+  } else if (error instanceof MissingParamError) {
+    res.status(400).json({ error: error.message });
   } else if (error instanceof NoResultsFoundError) {
-    res.status(404).send(error.message);
-  } else if (error instanceof InternalServerError) {
-    res.status(500).send(error.message);
+    res.status(404).json({ error: error.message });
+  } else if (error instanceof QueryResultsError) {
+    res.status(500).json({ error: error.message });
+  } else if (error instanceof FormNotFoundError) {
+    res.status(404).json({ error: error.message });
+  } else if (error instanceof SaveFormError) {
+    res.status(500).json({ error: error.message });
   } else {
-    console.error('Unexpected error:', error);
-    res.status(500).send('Internal server error');
+    res.status(500).json({ error: 'Unexpected error occurred' });
   }
 };
 
-export default errorMiddleware;
-
+export { errorHandler };

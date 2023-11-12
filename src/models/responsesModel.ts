@@ -1,4 +1,4 @@
-import { IAnswer, IUserResponse } from '@/types/types';
+import { IAnswer, IUserResponse } from '../types/types';
 import mongoose, { Schema } from 'mongoose';
 
 const AnswerSchema = new Schema<IAnswer>({

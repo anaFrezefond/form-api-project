@@ -5,21 +5,21 @@ import connectToDatabase from './config/db';
 import adminRouter from './routes/admin.routes';
 import userRouter from './routes/user.routes';
 
-import errorMiddleware from './middlewares/error.handler';
+import { errorHandler } from './middlewares/error.handler';
 
 dotenv.config({ path: '.env' });
 
 const app: Application = express();
- 
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use(adminRouter);
 app.use(userRouter);
 
-app.use(errorMiddleware);
+app.use(errorHandler);
 
-const initServer = async () => {
+const launchServer = async () => {
   try {
     const port = process.env.PORT || 3000;
     await connectToDatabase();
@@ -29,6 +29,8 @@ const initServer = async () => {
   } catch (error) {
     console.error('Error starting the server:', error);
   }
-}
+};
 
-initServer();
+launchServer();
+
+export default app;

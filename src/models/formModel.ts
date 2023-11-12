@@ -1,4 +1,4 @@
-import { IForm, IQuestion } from '@/types/types';
+import { IForm, IQuestion } from '../types/types';
 import mongoose, { Schema } from 'mongoose';
 
 const QuestionSchema = new Schema<IQuestion>({
